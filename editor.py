@@ -1,11 +1,22 @@
-from make_story import get_next_words, load_data_from_file
+import os
+import sys
+from pathlib import Path
 from tkinter import *
-from nltk.tokenize.regexp import RegexpTokenizer
 from tkinter import filedialog
+from os import listdir
+from os.path import isfile, join
+
+from nltk.tokenize.regexp import RegexpTokenizer
+
+from make_story import get_next_words, load_data_from_file
 
 BUTTONS_PER_COL = 8
+DATA_PATH = "./data/"
+data = None
 
 tokenizer = RegexpTokenizer(r'\w+')
+Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
+
 
 def getTextInput():
     result=text_field.get("1.0","end-1c")
@@ -33,8 +44,7 @@ def on_text_button_click(btn):
 
 
 def add_text_button(col_, row_):
-    btn = Button(root,text="empty lalala hoch sicher", width=14, command=lambda: on_text_button_click(btn))
-    #btn.pack(in_=col, side=BOTTOM)
+    btn = Button(root,text="", width=14, command=lambda: on_text_button_click(btn))
     btn.configure(font=("Courier", 20), bg="black")
     btn.grid(in_=col5, row=row_,column=col_)
     text_buttons.append(btn)
@@ -48,7 +58,6 @@ def add_text_coloumn(n):
 def fill_text_buttons(event=None):
     update_word_count()
     next_words = get_next_words(getTextInput(), data)
-    #print(next_words, len(text_buttons))
     for i in range(len(text_buttons)):
         tupel_nr = i // BUTTONS_PER_COL
         words = next_words[tupel_nr]
@@ -61,12 +70,44 @@ def fill_text_buttons(event=None):
             text_buttons[i]["text"] = ""
 
 
+def ask_for_files():
+    global data
+    nr = 1
+    names = [""]
+    print("------- chose file -------")
+    for file in listdir(DATA_PATH):
+        if file[-4:].lower() == ".txt":
+            names.append(file[:-4])
+            print(f"[{nr}] {file}")
+            nr += 1
+        
+    print("--------------------------")
 
-file_name = "data_lite"
-data = load_data_from_file("data/" + file_name + ".txt")
+    
+    try:
+        val = int(input("Enter number: "))
+        print(f"Start analysis of {names[val]}:" )
+        data = load_data_from_file(names[val])
+    except ValueError:
+        print("Wrong input, will exit program.")
+
+    pass
+
+
+if len(sys.argv) == 1:
+    ask_for_files()
+elif len(sys.argv) == 2:
+    name = DATA_PATH + sys.argv[1] + '.txt'
+    if os.path.isfile(name):
+        data = load_data_from_file(sys.argv[1])
+    else:
+        print(f"no file found at {name}")
+        
+
+
 
 root = Tk()
-root.title = "Penis"
+root.title("Story-o-mat")
 root.geometry("1100x1000")
 root.configure(background='black')
 root.attributes("-topmost", True)

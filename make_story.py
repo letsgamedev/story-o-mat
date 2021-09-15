@@ -1,16 +1,18 @@
-from data_set import DataSet
 from nltk.tokenize.regexp import RegexpTokenizer
 import random
 
+DATA_PATH = "./data/"
 tokenizer = RegexpTokenizer(r'\w+')
 
 
-def load_data_from_file(file_path):
+def load_data_from_file(file_name):
     super_dic = {}
+
+    file_path = DATA_PATH + file_name + ".txt"
 
     f = open(file_path, "r")
     lines_count = sum(1 for line in open(file_path))
-    print(lines_count)
+    print(f"{lines_count} lines to read.")
     current_line_count  = 0
     while True:
         line = f.readline()

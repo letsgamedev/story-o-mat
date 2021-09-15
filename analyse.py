@@ -1,13 +1,16 @@
-from nltk.tokenize.regexp import RegexpTokenizer
+import os.path
 import sys
 import time
-import os.path
-from os import error, listdir
+from os import listdir
 from os.path import isfile, join
+from pathlib import Path
 
+from nltk.tokenize.regexp import RegexpTokenizer
 
 BOOK_PATH = "./books/"
 MAX_LAYER_DEEP = 5
+
+Path("./data/").mkdir(parents=True, exist_ok=True)
 
 
 def parse_file(file_name):
