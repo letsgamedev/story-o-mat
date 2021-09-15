@@ -97,7 +97,7 @@ def set_progress(nr, sum, start_time):
 def ask_for_files():
     nr = 1
     names = [""]
-    print("------- chose file -------")
+    print("------- choose file -------")
     for file in listdir(BOOK_PATH):
         if file[-4:].lower() == ".txt":
             names.append(file[:-4])
