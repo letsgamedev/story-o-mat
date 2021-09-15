@@ -61,7 +61,7 @@ def parse_file(file_name):
 
     make_small_statistics(1, start_time)
 
-    with open("data/data_" + file_name + '.txt', 'w') as f:
+    with open("data/data_" + file_name + '.txt', 'w', encoding='utf-8') as f:
         for key in super_dic:
             words_string = []
             for word in super_dic[key]:
@@ -106,16 +106,19 @@ def ask_for_files():
         
     print("--------------------------")
 
-    
     try:
         val = int(input("Enter number: "))
+    except ValueError:
+        print("\nInvalid selection!")
+        return
+    if val < 1 or val >= len(names):
+        print("\nInvalid selection!")
+        return
+    try:
         print(f"Start analysis of {names[val]}:" )
         parse_file(names[val])
-    except ValueError:
-        print("Wrong input, will exit program.")
-
-    pass
-
+    except Exception as e:
+        print(f"\nException: {e}")
 
 if len(sys.argv) == 1:
     ask_for_files()
