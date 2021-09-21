@@ -45,7 +45,7 @@ def on_text_button_click(btn):
 
 def add_text_button(col_, row_):
     btn = Button(root,text="", width=14, command=lambda: on_text_button_click(btn))
-    btn.configure(font=("Courier", 20), bg="black")
+    btn.configure(font=("Courier", 20), bg="black", fg="red")
     btn.grid(in_=col5, row=row_,column=col_)
     text_buttons.append(btn)
 
@@ -126,7 +126,6 @@ text_field.pack()
 text_field.configure(font=("Courier", 30))
 
 text_buttons = []
-
 
 
 
