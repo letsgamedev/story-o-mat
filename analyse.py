@@ -35,37 +35,32 @@ def parse_file(file_name):
         new_set = words[j:j+MAX_LAYER_DEEP]
         next_word = words[j+MAX_LAYER_DEEP]
 
-
-        for i in range(1, len(new_set) + 1, 1):
+        for i in range(1, MAX_LAYER_DEEP + 1, 1):
             sub_set = new_set[-i:]
+
             if sub_set[0] == "$$%$":
                 continue
 
-            sub_tupel = ",".join(sub_set)
-            if sub_tupel not in super_dic:
-                super_dic[sub_tupel] = []
+            sub_tuple = ",".join(sub_set)
             
-            words_set = super_dic[sub_tupel]
-            word_data = None
-            for data in words_set:
-                if data[0] == next_word:
-                    word_data = data
+            # Creates a new dict for key 'sub_tuple' if it does not exist and return it
+            words_set = super_dic.setdefault(sub_tuple, dict())
             
-            if word_data == None:
-                word_data = [next_word, 0]
-                words_set.append(word_data)
-            
-            word_data[1] += 1
+            # Set value to 0 if no word hasn't been added yet
+            words_set.setdefault(next_word, 0)
+
+            words_set[next_word] += 1
         
-            set_progress(j, word_count, start_time)
+        set_progress(j, word_count, start_time)
 
     make_small_statistics(1, start_time)
-
-    with open("data/data_" + file_name + '.txt', 'w', encoding='utf-8') as f:
+    
+    with open(f"data/data_{file_name}.txt", "w", encoding="utf-8") as f:
         for key in super_dic:
             words_string = []
-            for word in super_dic[key]:
-                words_string.append("" + word[0] + ";" + str(word[1]))
+            for word_key, word_value in super_dic[key].items():
+                words_string.append(f"{word_key};{word_value}")
+
             f.write(key + "|" + ",".join(words_string) + "\n")
     
     end = time.time()
