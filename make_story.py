@@ -10,7 +10,7 @@ def load_data_from_file(file_name):
 
     file_path = DATA_PATH + file_name + ".txt"
 
-    f = open(file_path, "r")
+    f = open(file_path, "r", encoding="utf-8")
     lines_count = sum(1 for line in open(file_path))
     print(f"{lines_count} lines to read.")
     current_line_count  = 0
